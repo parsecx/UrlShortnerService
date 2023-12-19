@@ -1,0 +1,28 @@
+﻿@addTagHelper "*, Kursovaya.TagHelpers"
+@model Kursovaya.Entities.UrlModel
+
+<h1>Create url reference</h1>
+
+<hr />
+<div class="d-flex justify-content-center align-items-center">
+    <form asp-action="Create" asp-controller="Home" class="w-40">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="OriginalUrl" class="control-label">URL:</label>
+            <input asp-for="OriginalUrl" class="form-control" placeholder="Your url goes here..." required/>
+            <div class="form-group mt-2">
+            <span asp-validation-for="OriginalUrl" class="text-danger" ></span>
+            </div>
+        </div>
+        <div class="form-group d-flex justify-content-center align-content-center">
+            <input type="submit" value="Create" class="btn btn-primary btn-block w-75 mt-2"/>
+        </div>
+    </form>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

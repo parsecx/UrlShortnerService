@@ -1,0 +1,78 @@
+﻿@addTagHelper *, Kursovaya
+@using Kursovaya.Models;
+@model IndexViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+    table {
+        width : 100%;
+        table-layout: fixed;
+    }
+    th {
+        font-size:20px;
+        text-align:center;
+        height:30px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        width:16,5%;
+    }
+    td {
+        font-size:15px;
+        text-align:center;
+        min-height:40px;
+    }
+    h2 {
+        text-align:center;
+        color: darkgray;
+        word-break: break-all;
+    }
+</style>
+
+<div class="text-center">
+    @if(!User.Identity.IsAuthenticated)
+    {
+        <h2>You can't see or create short urls, please register or login</h2>
+    }
+    else
+    {
+        <input type="button" value="Short your link" class="btn btn-primary btn-block w-25 m-3" onclick="location.href='@Url.Action("Create", "Home")'" />
+        @if (Model.CurrentUrls.Count != 0)
+        {
+            <table class="table table-hover">
+                <tr>
+                    <th>Creation Date</th>
+                    <th>Original link</th>
+                    <th>Shortened link</th>
+                    <th>Amount of clicks</th>
+                    <th>Is enabled?</th>
+                    <th>Actions</th>
+                </tr>
+                @foreach (var urlData in Model.CurrentUrls)
+                {
+                    <tr>
+                    <td>@urlData.CreatedAt</td>
+                    <td>@urlData.OriginalUrl</td>
+                    <td>@urlData.ShortUrl</td>
+                    <td>@urlData.AmountOfRedirections</td>
+                    <td>@(urlData.IsEnalbed ? "Yes" : "No")</td>
+                        <td>
+                            <form asp-controller="Home" asp-action="Delete" method="post" asp-route-id="@urlData.Id">
+                                <input type="submit" class="btn btn-secondary btn-sm" value="Delete" />
+                            </form>
+                        </td>
+                </tr>
+            }
+
+            </table>
+            <page-link page-model="Model.PageViewModel" class="m-3" page-action="Index" page-controller="Home"></page-link>
+        } 
+        else
+        {
+            <h2>There are no shortened links right now!</h2>
+        }
+    }
+</div>
+
+
